@@ -17,26 +17,31 @@ class Quote_Generator():
         self.fetch_button.pack(pady=10)
 
     def fetch_data(self):
-        url = 'https://api.quotable.io/random'
+        # Make a get request to the JSON API
+        url = 'https://api.quotable.io/random' 
         response = requests.get(url)
 
-        if response.status_code == 200:
-            data = response.json()
-            content = data.get('content', 'content not found')
-            author = data.get('author')
+        # Check if request was successful
+        if response.status_code == 200: 
+            # Parse JSON response
+            data = response.json() 
+            # Extract content and author field 
+            content = data.get('content', 'content not found')  # Get 'content' field, or display error message if not found
+            author = data.get('author') # Get 'author' field 
             self.text_area.delete('1.0', tk.END)
-            self.insert_centered_text(content)
-            self.insert_centered_text(author)
+            self.insert_centered_text(content) # Insert Content
+            self.insert_centered_text(author) # Insert Author
         else:
             self.text_area.delete('1.0', tk.END)
             self.text_area.insert(tk.END, "Error: Failed to fetch data")
-    
-    def insert_centered_text(self, text):
+            
+    # Align the text to center
+    def insert_centered_text(self, text): 
         self.text_area.insert(tk.END, '\n\n' + text)
         self.text_area.tag_configure("center", justify="center")
         self.text_area.tag_add("center", "1.0", "end")
 
-
+# Create the Tkinter window
 root = tk.Tk()
 app = Quote_Generator(root)
 root.mainloop()
